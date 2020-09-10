@@ -15,7 +15,8 @@ router.post('/register', upload.none(), function(req,res){
         _id : new mongoose.Types.ObjectId(),
         username : req.body.username,
         email : req.body.email,
-        password : req.body.password
+        password : req.body.password,
+        date_created : Date.now()
     });
     userObj.save()
     .then(  function(){ res.status(201).json({response:'success'})}    )

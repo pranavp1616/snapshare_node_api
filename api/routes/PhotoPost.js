@@ -11,11 +11,11 @@ const UserModel = require('../models/UserModel');
 router.post('/create', upload.single('image') ,function(req,res){
     console.log(req.file);
 //    const req_user = UserModel.findOne(); // find user using req token
-
     const photoObj = new PhotoPostModel({
         _id : new mongoose.Types.ObjectId(),
         uploaded_by : req.body.uploaded_by,
-        hashtags : req.body.hashtags
+        hashtags : req.body.hashtags,
+        date_created : Date.now()
     });
     photoObj.save()
     .then(  function(){ res.status(201).json({response:'success'})})
