@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req,res){
-    console.log('photo working');
+const multer = require('multer'); // for parsing formdata (with images/files)
+const upload = multer({dest : '/uploads/'});
+ 
+router.post('/create', upload.single('image') ,function(req,res){
+    console.log(req.file);
+    console.log(req.body.hashtags);
 });
 
-router.post('/', function(req,res){
-    console.log('post photo')
-});
-
-router.delete('/', function(req,res){
-    console.log('delete photo');
+router.delete('/delete/:pk', function(req,res){
+    console.log('delete id '+req.params.pk);
 });
 
 module.exports = router;
