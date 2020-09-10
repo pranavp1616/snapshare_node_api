@@ -10,7 +10,12 @@ const UserModel = require('../models/UserModel');
 
 router.post('/create', upload.single('image') ,function(req,res){
     console.log(req.file);
-//    const req_user = UserModel.findOne(); // find user using req token
+    const req_user = UserModel.findById(req.body.uploaded_by)     // CHANGE THIS TO - find user using req token 
+        .then(() => console.log('okay proceed'))
+        .catch(err => {
+            res.status(500).json({response:'error',message:'user doesnt exist'})
+        });
+
     const photoObj = new PhotoPostModel({
         _id : new mongoose.Types.ObjectId(),
         uploaded_by : req.body.uploaded_by,
