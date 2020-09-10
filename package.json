@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pranavp1616/snapshare_nodejs_api/issues"
   },
-  "homepage": "https://github.com/pranavp1616/snapshare_nodejs_api#readme"
+  "homepage": "https://github.com/pranavp1616/snapshare_nodejs_api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
