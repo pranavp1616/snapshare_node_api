@@ -1,13 +1,13 @@
 const express = require('express');
-const app = express();
 const bodyParser= require('body-parser');
-
-// process.env.PORT for production and 3000 for development
-const PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000; // process.env.PORT for production and 3000 for development
 
 app.get('/', function(req,res){
-    res.json('API')
+    res.json('REST API');
 })
+
+
 
 // photopost CRUD
 app.get('/api/photopost/create/', function(req,res){
