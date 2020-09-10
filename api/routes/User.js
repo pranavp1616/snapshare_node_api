@@ -20,7 +20,8 @@ router.post('/register', upload.none(), function(req,res){
                 username : req.body.username,
                 email : req.body.email,
                 password : req.body.password,
-                date_created : Date.now()
+                date_created : Date.now(),
+                auth_token : new mongoose.Types.ObjectId()
             });
             userObj.save()
             .then(  function(){ res.status(201).json({response:'success'})}    )            
@@ -31,8 +32,8 @@ router.post('/register', upload.none(), function(req,res){
 
 router.post('/login', upload.none(), function(req,res){
     UserModel.findOne({ username: req.body.username }).exec()
-    .then( function(db_res) {
-        if(req.body.password == db_res.password) res.status(200).json({ response:'loggedin'});
+    .then( function(db_user) {
+        if(req.body.password == db_user.password) res.status(200).json({ response:'success',auth_token:db_user.auth_token});
         else res.status(200).json({response:'incorrect password'});
     })
     .catch( function(err) { 

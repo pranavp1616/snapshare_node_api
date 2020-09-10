@@ -10,7 +10,8 @@ const UserSchema = mongoose.Schema(
             match : /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         },
         password  : { type:String, required:true },
-        date_created : mongoose.Schema.Types.Date
+        date_created : mongoose.Schema.Types.Date,
+        auth_token : mongoose.Schema.Types.ObjectId // change to JWT token values later 
     }
 );
 
