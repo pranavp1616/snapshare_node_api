@@ -20,7 +20,10 @@ router.post('/create', upload.single('image') ,function(req,res){
 
 router.delete('/delete/:pk', function(req,res){
     console.log('delete id '+req.params.pk);
-    PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec();
+    // Delete only if the given photo id belongs to logged in user (ie from req token)
+    PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
+    .then(  function(){ res.status(201).json({response:'success'})}    )
+    .catch( function(){ res.status(500).json({response:'error'})});
 });
 
 module.exports = router;
