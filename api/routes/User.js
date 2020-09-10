@@ -7,6 +7,7 @@ const multer = require('multer');
 const upload = multer();
 
 const UserModel = require('../models/UserModel');
+const { response } = require('express');
 
 router.post('/register', upload.none(), function(req,res){
 //    console.log(req.body.username + req.body.email  + req.body.password);
@@ -22,8 +23,16 @@ router.post('/register', upload.none(), function(req,res){
 });
 
 router.post('/login', upload.none(), function(req,res){
-    console.log(req.body.username);
-    console.log(req.body.password);
+//    console.log(req.body.username + req.body.password);
+    UserModel.findOne({ username: req.body.username }).exec()
+    .then( function(db_res) {
+        if(req.body.password == db_res.password) res.status(200).json({ response:'loggedin'});
+        else res.status(200).json({response:'incorrect password'});
+    })
+    .catch( function(err) { 
+        res.status(200).json({response:'username doesnt exist'})
+    });
+
 });
 
 module.exports = router;
