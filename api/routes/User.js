@@ -5,12 +5,13 @@ const mongoose = require('mongoose');
 
 const multer = require('multer');
 const upload = multer();
+const bcrypt = require('bcrypt');
 
 const UserModel = require('../models/UserModel');
-const { response } = require('express');
 
 router.post('/register', upload.none(), function(req,res){
 //    console.log(req.body.username + req.body.email  + req.body.password);
+//  var hash_pwd = bcrypt.hash(req.body.password,10);              // HASH password and store (add this later)
     const userObj = new UserModel({
         _id : new mongoose.Types.ObjectId(),
         username : req.body.username,
