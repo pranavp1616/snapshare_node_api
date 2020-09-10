@@ -11,12 +11,15 @@ const PORT = process.env.PORT || 3000; // process.env.PORT for production and 30
 const pg_client = new Client ({
     user : 'postgres',
     host : 'localhost',
-    database : 'MY_SNAPSHARE_DB',
+    database : 'snapshare_db',
     password : 'postgres',
     port : 5432
 })
 pg_client.connect();
-
+pg_client.query('select * from test;', (err,res)=> {
+    console.log(res.rows);
+    pg_client.end();  
+})
 
 // *********************************************
 //              REST API start
