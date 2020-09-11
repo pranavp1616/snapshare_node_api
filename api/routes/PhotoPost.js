@@ -31,9 +31,24 @@ router.post('/create', IsAuthenticatedMiddleware , upload.single('image') ,funct
 });
 
 router.delete('/delete/:pk', IsAuthenticatedMiddleware, function(req,res){
-    PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
-    .then(  function(){ res.status(200).json({response:'success'})}    )
-    .catch( function(){ res.status(500).json({response:'error'})});
+    UserModel.findOne({auth_token:getTokenFromHeader(req)}).exec()
+    .then(function(user){
+        PhotoPostModel.findById(req.params.pk).exec()
+        .then( function(photoObj){
+            if(user._id.equals(photoObj.uploaded_by)){
+                PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
+                .then(  function(){ res.status(200).json({response:'success'})} )
+                .catch( function(){ res.status(500).json({response:'server error'})} );       
+            }
+            else{
+                res.status(500).json({response:'error you cant delete other users post'});
+            }
+        })
+        .catch(function() { res.status(500).json({response:'photo error'});    })
+    })
+    .catch( err => {
+        res.status(500).json({response:'user token error'});
+    });
 });
 
 module.exports = router;
