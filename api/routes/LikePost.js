@@ -10,9 +10,10 @@ router.post('/:pk', IsAuthenticated, function(req,res){
     .exec()
     .then(  function(likeObj){
         if(likeObj){
-            // already liked
-            LikeModel.deleteOne({by:req.user._id,image:req.params.pk}).exec();
-            console.log('disliked');
+            LikeModel.deleteOne({by:req.user._id,image:req.params.pk})
+            .exec()
+            .then(  function(){ return res.status(200).json({response:'disliked'})} )
+            .catch( function(){ return res.status(500).json({response:'server error'})} );  
         }
         else{
             const likeObj = new LikeModel({
@@ -21,14 +22,16 @@ router.post('/:pk', IsAuthenticated, function(req,res){
                 image : req.params.pk,
                 date_created : Date.now()
             });
-            likeObj.save();
-            console.log('liked');                
+            
+            likeObj
+            .save()
+            .then(  function(){ return res.status(200).json({response:'liked'})})
+            .catch( function(){ return res.status(500).json({response:'error'})});                    
         }
     })
     .catch( function(){
-        
-    })
-    
+        return res.status(500).json({response:'error'});
+    })    
 });
 
 module.exports = router;
