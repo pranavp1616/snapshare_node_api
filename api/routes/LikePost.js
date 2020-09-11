@@ -10,21 +10,19 @@ router.post('/:pk', IsAuthenticated, function(req,res){
     PhotoPostModel.findById(req.params.pk)
     .exec()
     .then(function(photoObj){
-                // check already liked
-                const alreadyLiked = photoObj.likes.get(req.user.username);
-                console.log("TEST"+alreadyLiked);
-                if(alreadyLiked){   // dislike
-                    delete photoObj.likes.get(req.user.username);
-                }else{  // like
+                if(photoObj.likes.get(req.user.username)){
+                    photoObj.likes.delete(req.user.username);
+                    msg = 'disliked'; 
+                }else{
                     const tempLikeObj = { date_created:Date.now() };
                     photoObj.likes.set(req.user.username,tempLikeObj);
-                    photoObj.save().then(function(){ 
-                        console.log('liked');
-                        console.log(photoObj);
-                    });    
+                    msg = 'liked'; 
                 }
+                photoObj.save().then(function(){ 
+                    return res.status(200).json({response:msg});
+                });    
     })
-    
+    .catch(function(){ return res.status(500).json({response:'error sever'}); })    
 });
 
 // GET all likes of :pk photo 
