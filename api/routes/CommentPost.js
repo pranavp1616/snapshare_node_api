@@ -21,6 +21,17 @@ router.post('/:pk', IsAuthenticated, function(req,res){
     .catch(function(){ return res.status(500).json({response:'error sever'}); })    
 });
 
+// (DELETE) comment
+router.delete('/:pk/:commentId', IsAuthenticated, function(req,res){
+    // Find photo and then goto comment and then delete it (if the token user and photo uploaded by are both same)
+    PhotoPostModel.findById(req.params.pk)
+    .exec()
+    .then(function(photoObj){
+        return res.status(200).json({response:'CODE not implemented'});
+    })
+    .catch(function(){ return res.status(500).json({response:'error sever'}); })
+});
+
 // GET all comments of :pk photo 
 router.get('/:pk', IsAuthenticated, function(req,res){
     PhotoPostModel.findById(req.params.pk)
