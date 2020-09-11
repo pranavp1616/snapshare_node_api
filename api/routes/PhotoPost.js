@@ -1,45 +1,46 @@
 const express = require('express');
 const router = express.Router();
 
-const multer = require('multer'); // for parsing formdata (with images/files)
-const myStorageConfig = multer.diskStorage({
-    destination: function(req, file, callbackfn) {
-        callbackfn(null, './media');   
-    },
-    filename: function(req, file, callbackfn) {
-        callbackfn(null, file.originalname);
-    }
-})
-const upload = multer({
-    storage: myStorageConfig
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_ID,
+    secretAccessKey: process.env.AWS_SECRET
 });
 
 const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
+const multer = require('multer'); // for parsing formdata (with images/files)
 
-router.post('/create', IsAuthenticated, upload.single('image'), function(req, res) {
-    const photoObj = new PhotoPostModel({
-        _id: new mongoose.Types.ObjectId(),
-        uploaded_by: req.user._id,
-        image: req.file.path,
-        hashtags: req.body.hashtags,
-        date_created: Date.now(),
-        likes: {},
-        comments: {}
-    });
-    photoObj
-        .save()
-        .then(function() {
-            return res.status(201).json({
-                response: 'success'
-            })
-        })
-        .catch(function() {
-            return res.status(500).json({
-                response: 'error'
-            })
+router.post('/create', IsAuthenticated, multer().single('image'), function(req, res) {
+    const upload_param = {  Bucket: process.env.AWS_BUCKET_NAME,
+        Key: req.file.originalname,
+        Body: req.file.buffer
+    }; 
+    s3.upload(upload_param, function(err,data){ 
+        const photoObj = new PhotoPostModel({
+            _id: new mongoose.Types.ObjectId(),
+            uploaded_by: req.user._id,
+            image: data.Location,
+            hashtags: req.body.hashtags,
+            date_created: Date.now(),
+            likes: {},
+            comments: {}
         });
+        photoObj
+            .save()
+            .then(function() {
+                return res.status(201).json({
+                    response: 'success'
+                })
+            })
+            .catch(function() {
+                return res.status(500).json({
+                    response: 'error'
+                })
+            });
+
+    });
 });
 
 router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
