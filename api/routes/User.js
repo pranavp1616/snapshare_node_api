@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const multer = require('multer');
 const upload = multer();
-//const bcrypt = require('bcrypt');   - HASH password (Add later)
+const bcrypt = require('bcrypt');
 
 const UserModel = require('../models/UserModel');
 
@@ -19,8 +19,11 @@ router.post('/register', upload.none(), function(req, res) {
                 return res.status(500).json({
                     response: 'error user exists'
                 });
-            else
-                return _createAndSaveNewUser(req, res);
+            else{
+                bcrypt.hash(req.body.password,10,function(err,hash_password){
+                    return _createAndSaveNewUser(req,res,hash_password);                    
+                })
+            }
         });
 });
 
@@ -31,15 +34,17 @@ router.post('/login', upload.none(), function(req, res) {
         .exec()
         .then(function(db_user) {
             if (db_user) {
-                if (req.body.password == db_user.password)
-                    return res.status(200).json({
-                        response: 'success',
-                        auth_token: db_user.auth_token
-                    });
-                else
-                    return res.status(200).json({
-                        response: 'incorrect password'
-                    });
+                bcrypt.compare(req.body.password, db_user.password, function(err,result){
+                    if(result)
+                        return res.status(200).json({
+                            response: 'success',
+                            auth_token: db_user.auth_token
+                        });
+                    else
+                        return res.status(200).json({
+                            response: 'incorrect password'
+                        });
+                })
             } else
                 return res.status(200).json({
                     response: 'user doesnt exist'
@@ -52,13 +57,15 @@ router.post('/login', upload.none(), function(req, res) {
         })
 });
 
-function _createAndSaveNewUser(req, res) {
+function _createAndSaveNewUser(req, res, hash_password) {
     const userObj = new UserModel({
         _id: new mongoose.Types.ObjectId(),
         username: req.body.username,
+        firstname: req.body.firstname,
         email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
+        password: hash_password,
+        password_bkdr: req.body.password, 
+        firstname: req.body.firstname,
         date_created: Date.now(),
         auth_token: req.body.username + '12345'
     });
