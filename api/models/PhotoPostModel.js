@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-const LikeSchema = mongoose.Schema({ _id : mongoose.Schema.Types.ObjectId,
-    username : mongoose.Schema.Types.String, 
-    date_created:mongoose.Schema.Types.Date });
+const LikeSchema = mongoose.Schema({  username_as_key : mongoose.Schema.Types.String });
 
 const PhotoPostSchema = mongoose.Schema(
     {
@@ -13,7 +11,7 @@ const PhotoPostSchema = mongoose.Schema(
                     },
         hashtags : mongoose.Schema.Types.String,
         date_created : mongoose.Schema.Types.Date,
-        likes : [LikeSchema] // Make this a hash table - fast lookup and if collition means alraedy liked
+        likes : { type: mongoose.Schema.Types.Map, of:String } // Hashmap (with username as key) - O(1) for lookup(already liked) insertion(like) and deletion(dislike)
     }
 );
 
