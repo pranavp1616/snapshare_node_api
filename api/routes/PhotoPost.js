@@ -32,12 +32,12 @@ router.post('/create', IsAuthenticated, multer().single('image'), function(req, 
             .save()
             .then(function() {
                 return res.status(201).json({
-                    response: 'success'
+                    'response': 'success'
                 })
             })
             .catch(function() {
                 return res.status(500).json({
-                    response: 'error'
+                    'response': 'error'
                 })
             });
 
@@ -57,22 +57,25 @@ router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
                     .exec()
                     .then(function() {
                         return res.status(200).json({
-                            response: 'success'
+                            'response': 'success'
                         })
                     })
                     .catch(function() {
                         return res.status(500).json({
-                            response: 'server error'
+                            'response': 'error',
+                            'message': 'server error'
                         })
                     });
             } else
-                return res.status(200).json({
-                    response: 'cannot delete other user post'
+                return res.status(500).json({
+                    'response': 'error',
+                    'message': 'cannot delete another users post'
                 });
         })
         .catch(function() {
             return res.status(500).json({
-                response: 'photo id wrong error'
+                'response': 'error',
+                'message': 'invalid photo id'
             });
         })
 });
