@@ -7,10 +7,10 @@ const upload = multer({dest : '/uploads/'});
 const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
 const UserModel = require('../models/UserModel');
-const getTokenFromHeader = require('./getTokenFromHeader');
-const checktoken = require('./authorizeTokenBeforeReq');
+const getTokenFromHeader = require('../helperFunctions/getTokenFromHeader');
+const IsAuthenticatedMiddleware = require('../helperFunctions/IsAuthenticatedMiddleware');
 
-router.post('/create', checktoken , upload.single('image') ,function(req,res){
+router.post('/create', IsAuthenticatedMiddleware , upload.single('image') ,function(req,res){
 //    console.log(req.file);
     const req_token = getTokenFromHeader(req);
     UserModel.findOne({auth_token:req_token}).exec()
