@@ -1,18 +1,28 @@
 const express = require('express');
 const router = express.Router();
+
 const multer = require('multer'); // for parsing formdata (with images/files)
+const myStorageConfig = multer.diskStorage({
+    destination: function(req, file, callbackfn) {
+        callbackfn(null, './media');   
+    },
+    filename: function(req, file, callbackfn) {
+        callbackfn(null, file.originalname);
+    }
+})
 const upload = multer({
-    dest: '/uploads/'
+    storage: myStorageConfig
 });
+
 const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
 router.post('/create', IsAuthenticated, upload.single('image'), function(req, res) {
-    //    console.log(req.file);
     const photoObj = new PhotoPostModel({
         _id: new mongoose.Types.ObjectId(),
         uploaded_by: req.user._id,
+        image: req.file.path,
         hashtags: req.body.hashtags,
         date_created: Date.now(),
         likes: {},

@@ -21,4 +21,7 @@ app.use(API_STRING + '/photopost', photoRoutes);
 app.use(API_STRING + '/user', userRoutes);
 app.use(API_STRING + '/comment', commentRoutes);
 
+// This will make media/images public
+app.use('/media', express.static('media'));
+
 module.exports = app;

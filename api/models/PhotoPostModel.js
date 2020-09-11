@@ -17,6 +17,10 @@ const PhotoPostSchema = mongoose.Schema({
         ref: 'UserModel',
         required: true
     },
+    image: {
+        type: mongoose.Schema.Types.String,
+        required: true
+    },
     hashtags: mongoose.Schema.Types.String,
     date_created: mongoose.Schema.Types.Date,
 
