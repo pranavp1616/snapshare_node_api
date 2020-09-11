@@ -27,6 +27,12 @@ router.post('/:pk', IsAuthenticated, function(req,res){
 
 // GET all likes of :pk photo 
 router.get('/:pk', IsAuthenticated, function(req,res){
+    PhotoPostModel.findById(req.params.pk)
+    .exec()
+    .then(function(photoObj){
+        return res.status(200).json(photoObj.likes);
+    })
+    .catch(function(){ return res.status(500).json({response:'error sever'}); })
 });
 
 module.exports = router;
