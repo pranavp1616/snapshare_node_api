@@ -8,9 +8,9 @@ const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
 const UserModel = require('../models/UserModel');
 const getTokenFromHeader = require('../helperFunctions/getTokenFromHeader');
-const IsAuthenticatedMiddleware = require('../helperFunctions/IsAuthenticatedMiddleware');
+const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
-router.post('/create', IsAuthenticatedMiddleware , upload.single('image') ,function(req,res){
+router.post('/create', IsAuthenticated , upload.single('image') ,function(req,res){
 //    console.log(req.file);
     const req_token = getTokenFromHeader(req);
     UserModel.findOne({auth_token:req_token}).exec()
@@ -30,7 +30,7 @@ router.post('/create', IsAuthenticatedMiddleware , upload.single('image') ,funct
         });
 });
 
-router.delete('/delete/:pk', IsAuthenticatedMiddleware, function(req,res){
+router.delete('/delete/:pk', IsAuthenticated, function(req,res){
     UserModel.findOne({auth_token:getTokenFromHeader(req)}).exec()
     .then(function(user){
         PhotoPostModel.findById(req.params.pk).exec()
