@@ -27,7 +27,10 @@ router.delete('/:pk/:commentId', IsAuthenticated, function(req,res){
     PhotoPostModel.findById(req.params.pk)
     .exec()
     .then(function(photoObj){
-        return res.status(200).json({response:'CODE not implemented'});
+        photoObj.comments.delete(req.params.commentId);
+        photoObj.save().then(function(){ 
+            return res.status(200).json({response:'comment deleted'});
+        });    
     })
     .catch(function(){ return res.status(500).json({response:'error sever'}); })
 });
