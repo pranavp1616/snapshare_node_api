@@ -11,7 +11,7 @@ const UserSchema = mongoose.Schema(
         },
         password  : { type:String, required:true },
         date_created : mongoose.Schema.Types.Date,
-        auth_token : mongoose.Schema.Types.ObjectId // change to JWT token values later 
+        auth_token : String // change to JWT token values later 
     }
 );
 

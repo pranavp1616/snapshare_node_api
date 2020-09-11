@@ -8,23 +8,25 @@ const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
 const UserModel = require('../models/UserModel');
 
-router.post('/create', upload.single('image') ,function(req,res){
-    console.log(req.file);
-    const req_user = UserModel.findById(req.body.uploaded_by)     // CHANGE THIS TO - find user using req token 
-        .then(() => console.log('okay proceed'))
-        .catch(err => {
-            res.status(500).json({response:'error',message:'user doesnt exist'})
-        });
+const checktoken_middleware = require('./checktoken_middleware');
 
-    const photoObj = new PhotoPostModel({
-        _id : new mongoose.Types.ObjectId(),
-        uploaded_by : req.body.uploaded_by,
-        hashtags : req.body.hashtags,
-        date_created : Date.now()
-    });
-    photoObj.save()
-    .then(  function(){ res.status(201).json({response:'success'})})
-    .catch( function(){ res.status(500).json({response:'error'})});
+router.post('/create', checktoken_middleware, upload.single('image') ,function(req,res){
+    console.log(req.file);
+    UserModel.findOne({auth_token:req.body.token}).exec()
+        .then( function(user){
+                const photoObj = new PhotoPostModel({
+                    _id : new mongoose.Types.ObjectId(),
+                    uploaded_by : user._id,
+                    hashtags : req.body.hashtags,
+                    date_created : Date.now()
+                });
+                photoObj.save()
+                .then(  function(){ res.status(201).json({response:'success'})})
+                .catch( function(){ res.status(500).json({response:'error'})});            
+        })
+        .catch(err => {
+            res.status(500).json({response:'error',message:'invalid token'})
+        });
 });
 
 router.delete('/delete/:pk', function(req,res){
