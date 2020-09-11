@@ -23,11 +23,11 @@ router.post('/create', IsAuthenticated , upload.single('image') ,function(req,re
                     date_created : Date.now()
                 });
                 photoObj.save()
-                .then(  function(){ res.status(201).json({response:'success'})})
-                .catch( function(){ res.status(500).json({response:'error'})});            
+                .then(  function(){ return res.status(201).json({response:'success'})})
+                .catch( function(){ return res.status(500).json({response:'error'})});            
         })
         .catch(err => {
-            res.status(500).json({response:'error',message:'invalid token'})
+            return res.status(500).json({response:'error',message:'invalid token'})
         });
 });
 
@@ -39,17 +39,17 @@ router.delete('/delete/:pk', IsAuthenticated, function(req,res){
         .then( function(photoObj){
             if(user._id.equals(photoObj.uploaded_by)){
                 PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
-                .then(  function(){ res.status(200).json({response:'success'})} )
-                .catch( function(){ res.status(500).json({response:'server error'})} );       
+                .then(  function(){ return res.status(200).json({response:'success'})} )
+                .catch( function(){ return res.status(500).json({response:'server error'})} );       
             }
             else{
-                res.status(500).json({response:'error you cant delete other users post'});
+                return res.status(500).json({response:'error you cant delete other users post'});
             }
         })
-        .catch(function() { res.status(500).json({response:'photo error'});    })
+        .catch(function() { return res.status(500).json({response:'photo error'});    })
     })
     .catch( err => {
-        res.status(500).json({response:'user token error'});
+        return res.status(500).json({response:'user token error'});
     });
 });
 

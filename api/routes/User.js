@@ -25,7 +25,7 @@ router.post('/register', upload.none(), function(req,res){
                 auth_token : req.body.username+'12345'
             });
             userObj.save()
-            .then(  function(){ res.status(201).json({response:'success'})}    )            
+            .then(  function(){ return res.status(201).json({response:'success'})}    )            
             .catch( function(){ return res.status(500).json({response:'error validation'})});
         } 
     });
