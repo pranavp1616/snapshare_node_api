@@ -18,7 +18,7 @@ router.post('/register', upload.none(), function(req, res) {
             if (db_user)
                 return res.status(500).json({
                     'response': 'error',
-                    'message': 'username not available'
+                    'message': 'Username not available'
                 });
             else {
                 bcrypt.hash(req.body.password, 10, function(err, hash_password) {
@@ -44,19 +44,19 @@ router.post('/login', upload.none(), function(req, res) {
                     else
                         return res.status(200).json({
                             'response': 'error',
-                            'message': 'incorrect password'
+                            'message': 'Your password was incorrect'
                         });
                 })
             } else
                 return res.status(200).json({
                     'response': 'error',
-                    'message': 'username doesnt exist'
+                    'message': 'The username you entered does not belong to an account'
                 });
         })
         .catch(function(err) {
             return res.status(500).json({
                 'response': 'error',
-                'message': 'server error'
+                'message': 'Server Error'
             });
         })
 });
@@ -78,13 +78,13 @@ function _createAndSaveNewUser(req, res, hash_password) {
         .then(function() {
             return res.status(201).json({
                 'response': 'success',
-                'message': 'Registration completed. Please login'
+                'message': 'Account created successfully. Please login'
             })
         })
         .catch(function() {
             return res.status(500).json({
                 'response': 'error',
-                'message': 'invalid input'
+                'message': 'Validation error. Please try again'
             })
         });
 }
