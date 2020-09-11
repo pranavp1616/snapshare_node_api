@@ -11,8 +11,8 @@ const UserModel = require('../models/UserModel');
 const checktoken_middleware = require('./checktoken_middleware');
 
 router.post('/create', checktoken_middleware, upload.single('image') ,function(req,res){
-    console.log(req.file);
-    const req_token = req.body.token;
+//    console.log(req.file);
+    const req_token = req.headers.authorization.split(' ')[1];
     UserModel.findOne({auth_token:req_token}).exec()
         .then( function(user){
                 const photoObj = new PhotoPostModel({
