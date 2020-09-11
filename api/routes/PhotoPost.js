@@ -12,7 +12,8 @@ const checktoken_middleware = require('./checktoken_middleware');
 
 router.post('/create', checktoken_middleware, upload.single('image') ,function(req,res){
     console.log(req.file);
-    UserModel.findOne({auth_token:req.body.token}).exec()
+    const req_token = req.body.token;
+    UserModel.findOne({auth_token:req_token}).exec()
         .then( function(user){
                 const photoObj = new PhotoPostModel({
                     _id : new mongoose.Types.ObjectId(),
