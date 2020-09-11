@@ -4,7 +4,6 @@ const router = express.Router();
 const PhotoPostModel = require('../models/PhotoPostModel');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
-//(POST) like/dislike
 router.post('/:pk', IsAuthenticated, function(req, res) {
     PhotoPostModel.findById(req.params.pk)
         .exec()
@@ -20,15 +19,11 @@ router.post('/:pk', IsAuthenticated, function(req, res) {
                 msg = 'liked';
             }
             photoObj.save().then(function() {
-                return res.status(200).json({
-                    response: msg
-                });
+                return res.status(200).json({'response':'success','message':msg});
             });
         })
         .catch(function() {
-            return res.status(500).json({
-                response: 'error sever'
-            });
+            return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 
@@ -40,9 +35,7 @@ router.get('/:pk', IsAuthenticated, function(req, res) {
             return res.status(200).json(photoObj.likes);
         })
         .catch(function() {
-            return res.status(500).json({
-                response: 'error sever'
-            });
+            return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 

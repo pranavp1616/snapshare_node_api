@@ -17,15 +17,11 @@ router.post('/:pk', IsAuthenticated, function(req, res) {
             };
             photoObj.comments.set(new mongoose.Types.ObjectId().toString(), tempCommentObj);
             photoObj.save().then(function() {
-                return res.status(200).json({
-                    response: 'commented'
-                });
+                return res.status(200).json({'response':'success','message':'comment posted'});
             });
         })
         .catch(function() {
-            return res.status(500).json({
-                response: 'error sever'
-            });
+            return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 
@@ -37,15 +33,11 @@ router.delete('/:pk/:commentId', IsAuthenticated, function(req, res) {
         .then(function(photoObj) {
             photoObj.comments.delete(req.params.commentId);
             photoObj.save().then(function() {
-                return res.status(200).json({
-                    response: 'comment deleted'
-                });
+                return res.status(200).json({'response':'success','message':'comment deleted'});
             });
         })
         .catch(function() {
-            return res.status(500).json({
-                response: 'error sever'
-            });
+            return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 
@@ -57,9 +49,7 @@ router.get('/:pk', IsAuthenticated, function(req, res) {
             return res.status(200).json(photoObj.comments);
         })
         .catch(function() {
-            return res.status(500).json({
-                response: 'error sever'
-            });
+            return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 
