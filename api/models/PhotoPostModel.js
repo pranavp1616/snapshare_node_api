@@ -9,11 +9,12 @@ const PhotoPostSchema = mongoose.Schema(
                     },
         hashtags : mongoose.Schema.Types.String,
         date_created : mongoose.Schema.Types.Date,
-        
-        likes : [ { _id : mongoose.Schema.Types.ObjectId,
-                    username : mongoose.Schema.Types.String, 
-                    date_created:mongoose.Schema.Types.Date } ]
+        likes : [LikeSchema] // Make this a hash table - fast lookup and if collition means alraedy liked
     }
 );
+
+const LikeSchema = mongoose.Schema({ _id : mongoose.Schema.Types.ObjectId,
+                                    username : mongoose.Schema.Types.String, 
+                                    date_created:mongoose.Schema.Types.Date });
 
 module.exports = mongoose.model('PhotopostModel',PhotoPostSchema);

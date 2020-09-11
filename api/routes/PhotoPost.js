@@ -10,7 +10,6 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
 router.post('/create', IsAuthenticated , upload.single('image') ,function(req,res){
 //    console.log(req.file);
-    console.log(req.user);
     const photoObj = new PhotoPostModel({
                     _id : new mongoose.Types.ObjectId(),
                     uploaded_by : req.user._id,
@@ -18,7 +17,6 @@ router.post('/create', IsAuthenticated , upload.single('image') ,function(req,re
                     date_created : Date.now(),
                     likes : []
     });
-    
     photoObj
     .save()
     .then(  function(){ return res.status(201).json({response:'success'})})
