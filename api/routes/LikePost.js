@@ -1,20 +1,34 @@
 const express = require('express');
 const router = express.Router();
 
-const PhotoPostModel = require('../models/PhotoPostModel');
-const UserModel = require('../models/UserModel');
-const getTokenFromHeader = require('../helperFunctions/getTokenFromHeader');
+const mongoose = require('mongoose');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
+const LikeModel = require('../models/LikeModel');
 
 router.post('/:pk', IsAuthenticated, function(req,res){
-    UserModel.findOne({auth_token:getTokenFromHeader(req)})
+    LikeModel.findOne({by:req.user._id,image:req.params.pk})
     .exec()
-    .then( function(user){
-
+    .then(  function(likeObj){
+        if(likeObj){
+            // already liked
+            LikeModel.deleteOne({by:req.user._id,image:req.params.pk}).exec();
+            console.log('disliked');
+        }
+        else{
+            const likeObj = new LikeModel({
+                _id : new mongoose.Types.ObjectId(),
+                by : req.user._id,
+                image : req.params.pk,
+                date_created : Date.now()
+            });
+            likeObj.save();
+            console.log('liked');                
+        }
     })
     .catch( function(){
-
+        
     })
+    
 });
 
 module.exports = router;
