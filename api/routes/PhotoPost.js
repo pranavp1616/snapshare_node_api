@@ -13,7 +13,8 @@ router.post('/create', IsAuthenticated , upload.single('image') ,function(req,re
                     uploaded_by : req.user._id,
                     hashtags : req.body.hashtags,
                     date_created : Date.now(),
-                    likes : {}
+                    likes : {},
+                    comments : {}
     });
     photoObj
     .save()

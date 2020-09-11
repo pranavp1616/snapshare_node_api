@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const LikeSchema = mongoose.Schema({   date_created : mongoose.Schema.Types.Date });
 
-const CommentSchema = mongoose.Schema({ comment : mongoose.Schema.Types.String,
+const CommentSchema = mongoose.Schema({ username : mongoose.Schema.Types.String,
+                                        comment : mongoose.Schema.Types.String,
                                         date_created : mongoose.Schema.Types.Date });
 
 const PhotoPostSchema = mongoose.Schema(
@@ -14,10 +15,14 @@ const PhotoPostSchema = mongoose.Schema(
                     },
         hashtags : mongoose.Schema.Types.String,
         date_created : mongoose.Schema.Types.Date,
+        
         // Hashmap (with username as key) - O(1) for lookup(already liked) insertion(like) and deletion(dislike)
         likes : {   type: mongoose.Schema.Types.Map, 
-                    of:LikeSchema }
+                    of:LikeSchema },
+        
         // Hashmap (with comment id as key)
+        comments : { type:mongoose.Schema.Types.Map,
+                    of:CommentSchema }
     }
 );
 
