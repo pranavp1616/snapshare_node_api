@@ -58,6 +58,7 @@ function _createAndSaveNewUser(req, res) {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
+        name: req.body.name,
         date_created: Date.now(),
         auth_token: req.body.username + '12345'
     });
