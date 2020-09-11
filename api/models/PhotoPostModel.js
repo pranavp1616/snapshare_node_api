@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const LikeSchema = mongoose.Schema({ _id : mongoose.Schema.Types.ObjectId,
+    username : mongoose.Schema.Types.String, 
+    date_created:mongoose.Schema.Types.Date });
+
 const PhotoPostSchema = mongoose.Schema(
     {
         _id :   mongoose.Schema.Types.ObjectId,
@@ -12,9 +16,5 @@ const PhotoPostSchema = mongoose.Schema(
         likes : [LikeSchema] // Make this a hash table - fast lookup and if collition means alraedy liked
     }
 );
-
-const LikeSchema = mongoose.Schema({ _id : mongoose.Schema.Types.ObjectId,
-                                    username : mongoose.Schema.Types.String, 
-                                    date_created:mongoose.Schema.Types.Date });
 
 module.exports = mongoose.model('PhotopostModel',PhotoPostSchema);
