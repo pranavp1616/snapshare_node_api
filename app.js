@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 const photoRoutes = require('./api/routes/PhotoPost');
 const likeRoutes = require('./api/routes/LikePost');
-const commentRoutes = require('./api/routes/CommentPost');
 const userRoutes = require('./api/routes/User');
 
 const PW = process.env.MONGO_ATLAS_PW || 'iostream'; 
@@ -19,7 +18,6 @@ mongoose.connect('mongodb+srv://pranav:'+ PW +'@cluster0.hr6hw.mongodb.net/<dbna
 // all API routes
 const API_STRING = '/api';
 app.use(API_STRING+'/like', likeRoutes);
-app.use(API_STRING+'/comment', commentRoutes);
 app.use(API_STRING+'/photopost', photoRoutes);
 app.use(API_STRING+'/user', userRoutes);
 

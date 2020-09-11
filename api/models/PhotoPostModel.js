@@ -8,7 +8,11 @@ const PhotoPostSchema = mongoose.Schema(
                         required:true
                     },
         hashtags : mongoose.Schema.Types.String,
-        date_created : mongoose.Schema.Types.Date
+        date_created : mongoose.Schema.Types.Date,
+        
+        likes : [ { _id : mongoose.Schema.Types.ObjectId,
+                    username : mongoose.Schema.Types.String, 
+                    date_created:mongoose.Schema.Types.Date } ]
     }
 );
 

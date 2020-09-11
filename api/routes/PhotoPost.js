@@ -15,7 +15,8 @@ router.post('/create', IsAuthenticated , upload.single('image') ,function(req,re
                     _id : new mongoose.Types.ObjectId(),
                     uploaded_by : req.user._id,
                     hashtags : req.body.hashtags,
-                    date_created : Date.now()
+                    date_created : Date.now(),
+                    likes : []
     });
     
     photoObj
