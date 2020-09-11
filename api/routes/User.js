@@ -10,10 +10,11 @@ const upload = multer();
 const UserModel = require('../models/UserModel');
 
 router.post('/register', upload.none(), function(req,res){
-    UserModel.findOne({'username':req.body.username}).exec()
-    .then( function(user){ 
-        if(user) 
-            res.status(500).json({response:'error user exists'});
+    UserModel.findOne({'username':req.body.username})
+    .exec()
+    .then( function(db_user){ 
+        if(db_user) 
+            return res.status(500).json({response:'error user exists'});
         else {
             const userObj = new UserModel({
                 _id : new mongoose.Types.ObjectId(),
@@ -25,19 +26,20 @@ router.post('/register', upload.none(), function(req,res){
             });
             userObj.save()
             .then(  function(){ res.status(201).json({response:'success'})}    )            
-            .catch( function(){ res.status(500).json({response:'error validation'})});
+            .catch( function(){ return res.status(500).json({response:'error validation'})});
         } 
     });
 });
 
 router.post('/login', upload.none(), function(req,res){
-    UserModel.findOne({ username: req.body.username }).exec()
+    UserModel.findOne({ username: req.body.username })
+    .exec()
     .then( function(db_user) {
-        if(req.body.password == db_user.password) res.status(200).json({ response:'success',auth_token:db_user.auth_token});
-        else res.status(200).json({response:'incorrect password'});
+        if(req.body.password == db_user.password) return res.status(200).json({ response:'success',auth_token:db_user.auth_token});
+        else return res.status(200).json({response:'incorrect password'});
     })
     .catch( function(err) { 
-        res.status(200).json({response:'username doesnt exist'})
+        return res.status(200).json({response:'username doesnt exist'})
     });
 });
 

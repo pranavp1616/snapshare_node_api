@@ -13,7 +13,8 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 router.post('/create', IsAuthenticated , upload.single('image') ,function(req,res){
 //    console.log(req.file);
     const req_token = getTokenFromHeader(req);
-    UserModel.findOne({auth_token:req_token}).exec()
+    UserModel.findOne({auth_token:req_token})
+        .exec()
         .then( function(user){
                 const photoObj = new PhotoPostModel({
                     _id : new mongoose.Types.ObjectId(),
@@ -31,7 +32,8 @@ router.post('/create', IsAuthenticated , upload.single('image') ,function(req,re
 });
 
 router.delete('/delete/:pk', IsAuthenticated, function(req,res){
-    UserModel.findOne({auth_token:getTokenFromHeader(req)}).exec()
+    UserModel.findOne({auth_token:getTokenFromHeader(req)})
+    .exec()
     .then(function(user){
         PhotoPostModel.findById(req.params.pk).exec()
         .then( function(photoObj){

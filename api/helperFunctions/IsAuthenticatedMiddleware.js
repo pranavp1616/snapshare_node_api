@@ -2,15 +2,13 @@ const UserModel = require('../models/UserModel');
 const getTokenFromHeader = require('./getTokenFromHeader');
 
 module.exports = function(req,res,next) {
-    console.log('auth_token check');
-    UserModel.findOne({auth_token:getTokenFromHeader(req)}).exec()
+    UserModel.findOne({auth_token:getTokenFromHeader(req)})
+    .exec()
     .then(function(user){
-        if(user)
-            next();
-        else
-            return res.status(401).json({response:'Not authorized'});
+        if(user)    next();
+        else    return res.status(401).json({response:'Unauthorized'});
     })
     .catch(function(){
-        return res.status(401).json({response:'Not authorized'})
+        return res.status(401).json({response:'Unauthorized'})
     });
-} 
+}
