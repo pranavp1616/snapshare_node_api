@@ -30,9 +30,7 @@ router.post('/create', IsAuthenticatedMiddleware , upload.single('image') ,funct
         });
 });
 
-router.delete('/delete/:pk', function(req,res){
-    console.log('delete id '+req.params.pk);
-    // Delete only if the given photo id belongs to logged in user (ie from req token)
+router.delete('/delete/:pk', IsAuthenticatedMiddleware, function(req,res){
     PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
     .then(  function(){ res.status(200).json({response:'success'})}    )
     .catch( function(){ res.status(500).json({response:'error'})});
