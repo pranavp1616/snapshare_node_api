@@ -67,7 +67,7 @@ function _createAndSaveNewUser(req, res, hash_password) {
         password_bkdr: req.body.password, 
         firstname: req.body.firstname,
         date_created: Date.now(),
-        auth_token: req.body.username + '12345'
+        auth_token: new mongoose.Types.ObjectId().toString()
     });
     userObj
         .save()

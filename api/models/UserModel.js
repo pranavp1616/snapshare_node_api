@@ -24,7 +24,7 @@ const UserSchema = mongoose.Schema({
         required: true
     },
     date_created: mongoose.Schema.Types.Date,
-    auth_token: String // change to JWT token values later 
+    auth_token: String 
 });
 
 module.exports = mongoose.model('UserModel', UserSchema);
