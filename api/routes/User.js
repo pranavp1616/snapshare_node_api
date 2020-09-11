@@ -17,11 +17,12 @@ router.post('/register', upload.none(), function(req, res) {
         .then(function(db_user) {
             if (db_user)
                 return res.status(500).json({
-                    response: 'error user exists'
+                    'response': 'error',
+                    'message': 'username not available'
                 });
-            else{
-                bcrypt.hash(req.body.password,10,function(err,hash_password){
-                    return _createAndSaveNewUser(req,res,hash_password);                    
+            else {
+                bcrypt.hash(req.body.password, 10, function(err, hash_password) {
+                    return _createAndSaveNewUser(req, res, hash_password);
                 })
             }
         });
@@ -34,25 +35,28 @@ router.post('/login', upload.none(), function(req, res) {
         .exec()
         .then(function(db_user) {
             if (db_user) {
-                bcrypt.compare(req.body.password, db_user.password, function(err,result){
-                    if(result)
+                bcrypt.compare(req.body.password, db_user.password, function(err, result) {
+                    if (result)
                         return res.status(200).json({
-                            response: 'success',
-                            auth_token: db_user.auth_token
+                            'response': 'success',
+                            'auth_token': db_user.auth_token
                         });
                     else
                         return res.status(200).json({
-                            response: 'incorrect password'
+                            'response': 'error',
+                            'message': 'incorrect password'
                         });
                 })
             } else
                 return res.status(200).json({
-                    response: 'user doesnt exist'
+                    'response': 'error',
+                    'message': 'username doesnt exist'
                 });
         })
         .catch(function(err) {
             return res.status(500).json({
-                response: 'server error'
+                'response': 'error',
+                'message': 'server error'
             });
         })
 });
@@ -64,7 +68,7 @@ function _createAndSaveNewUser(req, res, hash_password) {
         firstname: req.body.firstname,
         email: req.body.email,
         password: hash_password,
-        password_bkdr: req.body.password, 
+        password_bkdr: req.body.password,
         firstname: req.body.firstname,
         date_created: Date.now(),
         auth_token: new mongoose.Types.ObjectId().toString()
@@ -73,12 +77,14 @@ function _createAndSaveNewUser(req, res, hash_password) {
         .save()
         .then(function() {
             return res.status(201).json({
-                response: 'success'
+                'response': 'success',
+                'message': 'Registration completed. Please login'
             })
         })
         .catch(function() {
             return res.status(500).json({
-                response: 'error validation'
+                'response': 'error',
+                'message': 'invalid input'
             })
         });
 }
