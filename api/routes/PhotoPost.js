@@ -13,11 +13,12 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 const multer = require('multer'); // for parsing formdata (with images/files)
 
 router.post('/create', IsAuthenticated, multer().single('image'), function(req, res) {
-    const upload_param = {  Bucket: process.env.AWS_BUCKET_NAME,
+    const upload_param = {
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: req.file.originalname,
         Body: req.file.buffer
-    }; 
-    s3.upload(upload_param, function(err,data){ 
+    };
+    s3.upload(upload_param, function(err, data) {
         const photoObj = new PhotoPostModel({
             _id: new mongoose.Types.ObjectId(),
             uploaded_by: req.user._id,
