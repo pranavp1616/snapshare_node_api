@@ -5,7 +5,10 @@ module.exports = function(req,res,next) {
     UserModel.findOne({auth_token:getTokenFromHeader(req)})
     .exec()
     .then(function(user){
-        if(user)    next();
+        if(user)    {
+            req.user = user;
+            next();
+        }
         else    return res.status(401).json({response:'Unauthorized'});
     })
     .catch(function(){

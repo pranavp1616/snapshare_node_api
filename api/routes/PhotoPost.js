@@ -6,51 +6,39 @@ const upload = multer({dest : '/uploads/'});
 
 const mongoose = require('mongoose');
 const PhotoPostModel = require('../models/PhotoPostModel');
-const UserModel = require('../models/UserModel');
-const getTokenFromHeader = require('../helperFunctions/getTokenFromHeader');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
 router.post('/create', IsAuthenticated , upload.single('image') ,function(req,res){
 //    console.log(req.file);
-    const req_token = getTokenFromHeader(req);
-    UserModel.findOne({auth_token:req_token})
-        .exec()
-        .then( function(user){
-                const photoObj = new PhotoPostModel({
+    console.log(req.user);
+    const photoObj = new PhotoPostModel({
                     _id : new mongoose.Types.ObjectId(),
-                    uploaded_by : user._id,
+                    uploaded_by : req.user._id,
                     hashtags : req.body.hashtags,
                     date_created : Date.now()
-                });
-                photoObj.save()
-                .then(  function(){ return res.status(201).json({response:'success'})})
-                .catch( function(){ return res.status(500).json({response:'error'})});            
-        })
-        .catch(err => {
-            return res.status(500).json({response:'error',message:'invalid token'})
-        });
+    });
+    
+    photoObj
+    .save()
+    .then(  function(){ return res.status(201).json({response:'success'})})
+    .catch( function(){ return res.status(500).json({response:'error'})});            
 });
 
 router.delete('/delete/:pk', IsAuthenticated, function(req,res){
-    UserModel.findOne({auth_token:getTokenFromHeader(req)})
+    PhotoPostModel.findById(req.params.pk)
     .exec()
-    .then(function(user){
-        PhotoPostModel.findById(req.params.pk).exec()
-        .then( function(photoObj){
-            if(user._id.equals(photoObj.uploaded_by)){
-                PhotoPostModel.deleteOne({ _id : req.params.pk } ).exec()
+    .then( function(photoObj){
+            if(req.user._id.equals(photoObj.uploaded_by)){
+                PhotoPostModel.deleteOne({ _id : req.params.pk } )
+                .exec()
                 .then(  function(){ return res.status(200).json({response:'success'})} )
                 .catch( function(){ return res.status(500).json({response:'server error'})} );       
             }
             else{
                 return res.status(500).json({response:'error you cant delete other users post'});
             }
-        })
-        .catch(function() { return res.status(500).json({response:'photo error'});    })
     })
-    .catch( err => {
-        return res.status(500).json({response:'user token error'});
-    });
-});
+    .catch(function() { return res.status(500).json({response:'photo error'});    })
+ });
 
 module.exports = router;
