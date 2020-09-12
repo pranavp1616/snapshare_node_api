@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const PhotoPostModel = require('../models/PhotoPostModel');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 
@@ -18,12 +17,18 @@ router.post('/:pk', IsAuthenticated, function(req, res) {
                 photoObj.likes.set(req.user.username, tempLikeObj);
                 msg = 'liked';
             }
-            photoObj.save().then(function() {
-                return res.status(200).json({'response':'success','message':msg});
+            photoObj.save().then(() => {
+                return res.status(200).json({
+                    'response': 'success',
+                    'message': msg
+                });
             });
         })
-        .catch(function() {
-            return res.status(500).json({'response':'error','message':'server error'});
+        .catch(() => {
+            return res.status(500).json({
+                'response': 'error',
+                'message': 'server error'
+            });
         })
 });
 
@@ -35,7 +40,10 @@ router.get('/:pk', IsAuthenticated, function(req, res) {
             return res.status(200).json(photoObj.likes);
         })
         .catch(function() {
-            return res.status(500).json({'response':'error','message':'server error'});
+            return res.status(500).json({
+                'response': 'error',
+                'message': 'server error'
+            });
         })
 });
 
