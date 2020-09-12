@@ -23,7 +23,7 @@ router.post('/create', IsAuthenticated, multer().single('image'), function(req, 
         if (!aws_err) {
             const photoObj = new PhotoPostModel({
                 _id: new mongoose.Types.ObjectId(),
-                uploaded_by: req.user._id,
+                uploaded_by: req.user.username,
                 image: aws_response_data.Location,
                 hashtags: req.body.hashtags,
                 date_created: Date.now(),

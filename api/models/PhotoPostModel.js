@@ -13,8 +13,7 @@ const CommentSchema = mongoose.Schema({
 const PhotoPostSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     uploaded_by: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'UserModel',
+        type: mongoose.Schema.Types.String,
         required: true
     },
     image: {
