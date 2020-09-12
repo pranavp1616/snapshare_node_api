@@ -12,22 +12,22 @@ router.post('/:pk', IsAuthenticated, function(req, res) {
         .then(function(photoObj) {
             const tempCommentObj = {
                 username: req.user.username,
-                comment: 'testcomment',
+                comment: 'test_comment',
                 date_created: Date.now()
             };
             photoObj.comments.set(new mongoose.Types.ObjectId().toString(), tempCommentObj);
-            photoObj.save().then(function() {
+            photoObj.save().then(()=>{
                 return res.status(200).json({'response':'success','message':'comment posted'});
             });
         })
-        .catch(function() {
+        .catch(()=>{
             return res.status(500).json({'response':'error','message':'server error'});
         })
 });
 
 // (DELETE) comment
 router.delete('/:pk/:commentId', IsAuthenticated, function(req, res) {
-    // Find photo and then goto comment and then delete it (if the token user and photo uploaded by are both same)
+    // goto comment and then delete it (if the token user and photo uploaded by are both same)
     PhotoPostModel.findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
@@ -36,7 +36,7 @@ router.delete('/:pk/:commentId', IsAuthenticated, function(req, res) {
                 return res.status(200).json({'response':'success','message':'comment deleted'});
             });
         })
-        .catch(function() {
+        .catch(()=>{
             return res.status(500).json({'response':'error','message':'server error'});
         })
 });
