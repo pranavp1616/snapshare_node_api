@@ -1,35 +1,36 @@
-# SNAPSHARE API
-Node JS (Express)
-using Mongo DB (using Mongoose ODM)
+<h4>stack</h4>
+Node JS (Express) REST <br/>
+Mongo DB (Mongoose ODM) <br/>
+AWS <br/>
 
-API(s)
-POST    api/user/register
-POST    api/user/login
+<h4>api</h4>
+POST    api/user/register  <br/>
+POST    api/user/login  <br/>
 
-GET     api/home-feed/page/:pagenumber
-GET     api/myprofile/page/:pagenumber
-GET     api/friend/:friendname/page/:pagenumber
-GET     api/search/:pattern/page/:pagenumber
+GET     api/home-feed/page/:pagenumber <br/>
+GET     api/myprofile/page/:pagenumber <br/>
+GET     api/friend/:friendname/page/:pagenumber <br/>
+GET     api/search/:pattern/page/:pagenumber <br/>
 
-POST    api/photopost/create
-DELETE  api/photopost/delete/:photoid
+POST    api/photopost/create <br/>
+DELETE  api/photopost/delete/:photoid  <br/>
 
-POST    api/like/:photoid
-GET     api/like/:photoid
+POST    api/like/:photoid  <br/>
+GET     api/like/:photoid  <br/>
 
-POST    api/comment/:photoid
-GET     api/comment/:photoid
-DELETE  api/comment/:photoid/:commentid
+POST    api/comment/:photoid  <br/>
+GET     api/comment/:photoid  <br/>
+DELETE  api/comment/:photoid/:commentid  <br/>
 
 
-# ENVIRONMENT VARIABLES 
-cmd : $set in windows 
-cmd : $export in linux
+<h4>ENVIRONMENT VARIABLES</h4>
+cmd : $set in windows <br/>
+cmd : $export in linux <br/>
 
-(For server port - default 3000)
-    set port <port-number>
+(For server port - default 3000) <br/>
+    set port 8000 <br/>
 
-(For AWS S3 file uploads)
-    set AWS_BUCKET_NAME=<bucket-name>
-    set AWS_ACCESS_ID=****
-    set AWS_SECRET=****
+(For AWS S3 file uploads) <br/>
+    set AWS_BUCKET_NAME=bucket-name <br/>
+    set AWS_ACCESS_ID=**** <br/>
+    set AWS_SECRET=**** <br/>
