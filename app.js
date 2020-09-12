@@ -15,6 +15,14 @@ mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/<db
 }).then(() => console.log('********Connection Successful********')).catch(err => console.log(err));
 
 
+// CORS enable
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    next();
+});
+
 // all API routes
 const API_STRING = '/api';
 app.use(API_STRING + '/like', likeRoutes);
