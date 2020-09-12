@@ -30,7 +30,7 @@ function registerUser(req,res,result){
     else {
         bcrypt.hash(req.body.password, 10)
         .then((hash_password) => { return createAndSaveNewUser(req, res, hash_password); })
-        .catch((err)=>{ console.log(err) });
+        .catch((err)=>{ return res.status(500).json('error password hash failed') });
     }
 }
 
@@ -49,7 +49,7 @@ function loginUser(req,res,db_user) {
                     'message': 'Your password was incorrect'
                 });
         })
-        .catch((err)=>{ console.log(err); });
+        .catch((err)=>{ return res.status(500).json('error password hash failed')});
     } else
         return res.status(200).json({
             'response': 'error',
