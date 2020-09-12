@@ -24,12 +24,8 @@ DELETE  api/comment/:photoid/:commentid  <br/>
 
 
 <h4>ENVIRONMENT VARIABLES</h4>
-cmd : $set in windows <br/>
-cmd : $export in linux <br/>
-
 (For server port - default 3000) <br/>
     set port 8000 <br/>
-
 (For AWS S3 file uploads) <br/>
     set AWS_BUCKET_NAME=bucket-name <br/>
     set AWS_ACCESS_ID=**** <br/>
