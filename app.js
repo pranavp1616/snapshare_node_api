@@ -8,6 +8,7 @@ const commentRoutes = require('./api/routes/CommentPost');
 const userRoutes = require('./api/routes/User');
 const homeFeedRoutes = require('./api/routes/Home-feed');
 const friendFeedRoutes = require('./api/routes/Friend-feed');
+const myprofileFeedRoutes = require('./api/routes/Myprofile-feed');
 
 const PW = process.env.MONGO_ATLAS_PW || 'iostream';
 mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/<dbname>?retryWrites=true&w=majority', {
@@ -31,6 +32,7 @@ app.use(API_STRING + '/photopost', photoRoutes);
 app.use(API_STRING + '/user', userRoutes);
 app.use(API_STRING + '/comment', commentRoutes);
 app.use(API_STRING + '/friend', friendFeedRoutes);
+app.use(API_STRING + '/myprofile', myprofileFeedRoutes);
 app.use(API_STRING + '/home-feed', homeFeedRoutes);
 
 // This will make media/images public
