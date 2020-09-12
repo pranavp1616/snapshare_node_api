@@ -2,7 +2,7 @@ const PhotoPostModel = require('../models/PhotoPostModel');
 
 const POST_PER_PAGE = 10;
 
-function getAllPhotoposts(condition, pageNo) {
+function getAllPhotoposts(condition, pageNo, req_username) {
     return new Promise(function(resolve, reject) {
         PhotoPostModel
             .find(condition)
@@ -10,10 +10,10 @@ function getAllPhotoposts(condition, pageNo) {
                 date_created: -1
             })
             .limit(POST_PER_PAGE)
-            .select('_id uploaded_by image hashtags date_created')
+            .select('_id uploaded_by image hashtags date_created likes comments')
             .exec()
             .then((result) => {
-                const data = result.map(i=>foo(i))
+                const data = result.map(i=>foo(i, req_username))
                 resolve(data);
             })
             .catch((err) => {
@@ -22,7 +22,8 @@ function getAllPhotoposts(condition, pageNo) {
     })
 }
 
-function foo(i){
+function foo(i, req_username){
+    console.log(req_username);
     return {
         id: i._id,
         uploaded_by : i.uploaded_by,

@@ -4,7 +4,7 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 const getAllPhotoposts = require('../helperFunctions/getAllPhotoposts');
 
 router.get('/page/:pageNo', IsAuthenticated, function(req, res) {
-    getAllPhotoposts({uploaded_by:req.user.username}, req.params.pageNo)
+    getAllPhotoposts({uploaded_by:req.user.username}, req.params.pageNo,req.user.username)
         .then((data) => {
             return res.status(200).json(data);
         })
