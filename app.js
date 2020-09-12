@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const photoRoutes = require('./api/routes/PhotoPost');
 const likeRoutes = require('./api/routes/LikePost');
@@ -19,12 +20,7 @@ mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/<db
 
 
 // CORS enable
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    next();
-});
+app.use(cors());
 
 // all API routes
 const API_STRING = '/api';
