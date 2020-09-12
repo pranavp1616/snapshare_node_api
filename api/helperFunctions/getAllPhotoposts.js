@@ -6,10 +6,10 @@ function getAllPhotoposts(condition, pageNo, req_username) {
     return new Promise(function(resolve, reject) {
         PhotoPostModel
             .find(condition)
+            .limit(POST_PER_PAGE)
             .sort({
                 date_created: -1
             })
-            .limit(POST_PER_PAGE)
             .select('_id uploaded_by image hashtags date_created likes comments')
             .exec()
             .then((result) => {
