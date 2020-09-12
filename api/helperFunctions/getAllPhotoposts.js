@@ -25,9 +25,9 @@ function getAllPhotoposts(condition, pageNo) {
 function foo(i){
     return {
         id: i._id,
+        uploaded_by : i.uploaded_by,
         image : i.image,
         hashtags : i.hashtags,
-        uploaded_by : i.uploaded_by,
         is_liked : true,
         date_created : i.date_created,
         total_likes : 10,
