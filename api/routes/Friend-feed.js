@@ -9,7 +9,7 @@ router.get('/:friendName/page/:pageNo', IsAuthenticated, function(req, res) {
     .exec()
     .then((userObj)=>{
         if(userObj){
-            getAllPhotoposts({uploaded_by:userObj._id}, req.params.pageNo)
+            getAllPhotoposts({uploaded_by:userObj.username}, req.params.pageNo)
             .then((data) => {
                 return res.status(200).json(data);
             })
