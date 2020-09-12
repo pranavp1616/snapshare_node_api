@@ -19,8 +19,8 @@ router.post('/create', IsAuthenticated, multer().single('image'), function(req, 
         Body: req.file.buffer
     };
 
-    s3.upload(uploadParams, function(aws_err,aws_response_data) {
-        if(!aws_err){
+    s3.upload(uploadParams, function(aws_err, aws_response_data) {
+        if (!aws_err) {
             const photoObj = new PhotoPostModel({
                 _id: new mongoose.Types.ObjectId(),
                 uploaded_by: req.user._id,
@@ -29,21 +29,22 @@ router.post('/create', IsAuthenticated, multer().single('image'), function(req, 
                 date_created: Date.now(),
                 likes: {},
                 comments: {}
-            });    
+            });
 
             photoObj
-            .save()
-            .then((db_data)=> {
-                return res.status(201).json({
-                    'response': 'success', 'data':db_data 
+                .save()
+                .then((db_data) => {
+                    return res.status(201).json({
+                        'response': 'success',
+                        'data': db_data
+                    })
                 })
-            })
-            .catch((err)=> {
-                return res.status(500).json({
-                    'response': 'error'
-                })
-            });
-        } else{
+                .catch((err) => {
+                    return res.status(500).json({
+                        'response': 'error'
+                    })
+                });
+        } else {
             return res.status(500).json('aws error');
         }
     })
@@ -60,15 +61,15 @@ router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
                         _id: req.params.pk
                     })
                     .exec()
-                    .then(function() {
+                    .then(() => {
                         return res.status(200).json({
                             'response': 'success'
                         })
                     })
-                    .catch(function() {
+                    .catch((err) => {
                         return res.status(500).json({
                             'response': 'error',
-                            'message': 'server error'
+                            'message': 'could not complete delete request,server error'
                         })
                     });
             } else
@@ -77,7 +78,7 @@ router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
                     'message': 'cannot delete another users post'
                 });
         })
-        .catch(function() {
+        .catch((err) => {
             return res.status(500).json({
                 'response': 'error',
                 'message': 'invalid photo id'

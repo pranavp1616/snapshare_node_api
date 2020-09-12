@@ -8,48 +8,66 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../models/UserModel');
 
 router.post('/register', upload.none(), function(req, res) {
-    UserModel.findOne({ username: req.body.username })
+    UserModel.findOne({
+            username: req.body.username
+        })
         .exec()
-        .then((findOne_result) => { return registerUser(req,res,findOne_result) })
-        .catch((err)=> { return res.status(500).json('server error') });
+        .then((findOne_result) => {
+            return registerUser(req, res, findOne_result)
+        })
+        .catch((err) => {
+            return res.status(500).json('server error')
+        });
 });
 
 router.post('/login', upload.none(), function(req, res) {
-    UserModel.findOne({ username: req.body.username })
+    UserModel.findOne({
+            username: req.body.username
+        })
         .exec()
-        .then((findOne_result) => { return loginUser(req,res,findOne_result) })
-        .catch((err) => { return res.status(500).json('server error') });
+        .then((findOne_result) => {
+            return loginUser(req, res, findOne_result)
+        })
+        .catch((err) => {
+            return res.status(500).json('server error')
+        });
 });
 
-function registerUser(req,res,result){
+function registerUser(req, res, result) {
     if (result)
-        return res.status(500).json({ 
+        return res.status(500).json({
             'response': 'error',
             'message': 'Username not available'
         });
     else {
         bcrypt.hash(req.body.password, 10)
-        .then((hash_password) => { return createAndSaveNewUser(req, res, hash_password); })
-        .catch((err)=>{ return res.status(500).json('error password hash failed') });
+            .then((hash_password) => {
+                return createAndSaveNewUser(req, res, hash_password);
+            })
+            .catch((err) => {
+                return res.status(500).json('error password hash failed')
+            });
     }
 }
 
-function loginUser(req,res,db_user) {
+function loginUser(req, res, db_user) {
     if (db_user) {
         bcrypt.compare(req.body.password, db_user.password)
-        .then((result) => {
-            if (result)
-                return res.status(200).json({
-                    'response': 'success',
-                    'auth_token': db_user.auth_token
-                });
-            else
-                return res.status(200).json({
-                    'response': 'error',
-                    'message': 'Your password was incorrect'
-                });
-        })
-        .catch((err)=>{ return res.status(500).json('error password hash failed')});
+            .then((result) => {
+                if (result)
+                    return res.status(200).json({
+                        'response': 'success',
+                        'auth_token': db_user.auth_token
+                    });
+                else
+                    return res.status(200).json({
+                        'response': 'error',
+                        'message': 'Your password was incorrect'
+                    });
+            })
+            .catch((err) => {
+                return res.status(500).json('error password hash failed')
+            });
     } else
         return res.status(200).json({
             'response': 'error',
