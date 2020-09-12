@@ -23,13 +23,16 @@ function getAllPhotoposts(condition, pageNo, req_username) {
 }
 
 function foo(i, req_username){
-    console.log(req_username);
+    var is_liked = false;
+    if(i.likes.get(req_username))
+        is_liked = true;
+
     return {
         id: i._id,
         uploaded_by : i.uploaded_by,
         image : i.image,
         hashtags : i.hashtags,
-        is_liked : true,
+        'is_liked' : is_liked,
         date_created : i.date_created,
         total_likes : 10,
         total_comments : 10 
