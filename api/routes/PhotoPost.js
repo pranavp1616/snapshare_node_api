@@ -13,35 +13,40 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 const multer = require('multer'); // for parsing formdata (with images/files)
 
 router.post('/create', IsAuthenticated, multer().single('image'), function(req, res) {
-    const upload_param = {
+    const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: req.file.originalname,
         Body: req.file.buffer
     };
-    s3.upload(upload_param, function(err, data) {
-        const photoObj = new PhotoPostModel({
-            _id: new mongoose.Types.ObjectId(),
-            uploaded_by: req.user._id,
-            image: data.Location,
-            hashtags: req.body.hashtags,
-            date_created: Date.now(),
-            likes: {},
-            comments: {}
-        });
-        photoObj
+
+    s3.upload(uploadParams, function(aws_err,aws_response_data) {
+        if(!aws_err){
+            const photoObj = new PhotoPostModel({
+                _id: new mongoose.Types.ObjectId(),
+                uploaded_by: req.user._id,
+                image: aws_response_data.Location,
+                hashtags: req.body.hashtags,
+                date_created: Date.now(),
+                likes: {},
+                comments: {}
+            });    
+
+            photoObj
             .save()
-            .then(function() {
+            .then((db_data)=> {
                 return res.status(201).json({
-                    'response': 'success'
+                    'response': 'success', 'data':db_data 
                 })
             })
-            .catch(function() {
+            .catch((err)=> {
                 return res.status(500).json({
                     'response': 'error'
                 })
             });
-
-    });
+        } else{
+            return res.status(500).json('aws error');
+        }
+    })
 });
 
 router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
