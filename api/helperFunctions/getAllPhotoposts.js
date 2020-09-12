@@ -34,8 +34,8 @@ function foo(i, req_username){
         hashtags : i.hashtags,
         'is_liked' : is_liked,
         date_created : i.date_created,
-        total_likes : 10,
-        total_comments : 10 
+        total_likes : i.likes.size,
+        total_comments : i.comments.size 
     };
 }
 
