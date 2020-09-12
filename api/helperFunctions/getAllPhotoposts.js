@@ -12,7 +12,8 @@ function getAllPhotoposts(condition, pageNo) {
             .limit(POST_PER_PAGE)
             .select('_id uploaded_by image hashtags date_created')
             .exec()
-            .then((data) => {
+            .then((result) => {
+                const data = result.map(i=>foo(i))
                 resolve(data);
             })
             .catch((err) => {
@@ -21,5 +22,17 @@ function getAllPhotoposts(condition, pageNo) {
     })
 }
 
+function foo(i){
+    return {
+        id: i._id,
+        image : i.image,
+        hashtags : i.hashtags,
+        uploaded_by : i.uploaded_by,
+        is_liked : true,
+        date_created : i.date_created,
+        total_likes : 10,
+        total_comments : 10 
+    };
+}
 
 module.exports = getAllPhotoposts; 
