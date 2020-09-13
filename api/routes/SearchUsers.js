@@ -4,7 +4,6 @@ const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 const UserModel = require('../models/UserModel');
 
 router.get('/:pattern/page/:pageNo', IsAuthenticated, function(req, res) {
-    console.log(req.params.pattern);
     const pattern = req.params.pattern;
     UserModel.find({ 'username': new RegExp(pattern,'i') })
     .exec()
