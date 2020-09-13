@@ -4,15 +4,17 @@ const router = express.Router();
 const PhotoPostModel = require('../models/PhotoPostModel');
 const IsAuthenticated = require('../helperFunctions/IsAuthenticatedMiddleware');
 const mongoose = require('mongoose');
+const multer = require('multer');
+const upload = multer();
 
 //(POST) comment
-router.post('/:pk', IsAuthenticated, function(req, res) {
+router.post('/:pk', IsAuthenticated, upload.none(), function(req, res) {
     PhotoPostModel.findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
             const tempCommentObj = {
                 username: req.user.username,
-                comment: 'test_comment',
+                comment: req.body.comment,
                 date_created: Date.now()
             };
             photoObj.comments.set(new mongoose.Types.ObjectId().toString(), tempCommentObj);
