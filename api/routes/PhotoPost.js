@@ -55,7 +55,7 @@ router.delete('/delete/:pk', IsAuthenticated, function(req, res) {
         .findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
-            if (req.user._id.equals(photoObj.uploaded_by)) {
+            if (req.user.username == photoObj.uploaded_by) {
                 PhotoPostModel
                     .deleteOne({
                         _id: req.params.pk
