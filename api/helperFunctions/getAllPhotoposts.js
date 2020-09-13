@@ -33,7 +33,7 @@ function foo(i, req_username){
         image : i.image,
         hashtags : i.hashtags,
         'is_liked' : is_liked,
-        date_created : i.date_created,
+        date_created : i.date_created.toString(),
         total_likes : i.likes.size,
         total_comments : i.comments.size 
     };
