@@ -8,7 +8,7 @@ const CommentSchema = mongoose.Schema({
     username: mongoose.Schema.Types.String,
     comment: mongoose.Schema.Types.String,
     date_created: mongoose.Schema.Types.Date
-});
+},{_id:false});
 
 const PhotoPostSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
