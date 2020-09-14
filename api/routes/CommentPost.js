@@ -65,7 +65,7 @@ router.get('/:pk', IsAuthenticated, function(req, res) {
     PhotoPostModel.findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
-            const commentsArray = Array.from(photoObj.comments, ([key,value])=>({key,value}));
+            const commentsArray = Array.from(photoObj.comments, ([key,value])=>{return {key,value}});
             return res.status(200).json(commentsArray);
         })
         .catch(function() {

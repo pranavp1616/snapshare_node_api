@@ -37,7 +37,8 @@ router.get('/:pk', IsAuthenticated, function(req, res) {
     PhotoPostModel.findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
-            return res.status(200).json(photoObj.likes);
+            const likesArray = Array.from(photoObj.likes, ([key,value])=>{return {key,value}});
+            return res.status(200).json(likesArray);
         })
         .catch(function() {
             return res.status(500).json({
