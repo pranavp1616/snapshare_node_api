@@ -34,11 +34,11 @@ router.post('/:pk', IsAuthenticated, upload.none(), function(req, res) {
 });
 
 // (DELETE) comment
-router.delete('/:pk/:commentId', IsAuthenticated, function(req, res) {
+router.delete('/:pk/delete/:commentId', IsAuthenticated, function(req, res) {
     PhotoPostModel.findById(req.params.pk)
         .exec()
         .then(function(photoObj) {
-            if (req.user._id.equals(photoObj.uploaded_by)) {
+            if (req.user.username == photoObj.uploaded_by) {
                 photoObj.comments.delete(req.params.commentId);
                 photoObj.save().then(() => {
                     return res.status(200).json({
