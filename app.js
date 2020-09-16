@@ -12,8 +12,9 @@ const friendFeedRoutes = require('./api/routes/Friend-feed');
 const searchUsersRoutes = require('./api/routes/SearchUsers');
 const myprofileFeedRoutes = require('./api/routes/Myprofile-feed');
 
-const PW = process.env.MONGO_ATLAS_PW || 'iostream';
-mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/<dbname>?retryWrites=true&w=majority', {
+const PW = process.env.MONGO_ATLAS_PW;
+const DB = process.env.MONGO_ATLAS_DB; 
+mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/'+DB+'?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
     useNewUrlParser: true
 }).then(() => console.log('********Connection Successful********')).catch(err => console.log(err));

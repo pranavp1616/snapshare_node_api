@@ -18,10 +18,14 @@ POST    api/comment/:photoid  <br/>
 GET     api/comment/:photoid  <br/>
 DELETE  api/comment/:photoid/:commentid  <br/>
 
-<h4>ENVIRONMENT VARIABLES</h4>
-(For server port - default 3000) <br/>
-    set port 8000 <br/>
+
+<h4> PROD - AWS-EC2 ENV variables</h4>
+(For server port - update with same port in NGINX reverse proxy config file) <br/>
+    set port 3000 <br/>
 (For AWS S3 file uploads) <br/>
-    set AWS_BUCKET_NAME=bucket-name <br/>
+    set AWS_BUCKET_NAME=**** <br/>
     set AWS_ACCESS_ID=**** <br/>
     set AWS_SECRET=**** <br/>
+(For MongoDB conn) <br/>
+    set MONGO_ATLAS_PW=**** <br/>
+    set MONGO_ATLAS_DB=snapshare_db
