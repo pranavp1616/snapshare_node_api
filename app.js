@@ -12,8 +12,9 @@ const friendFeedRoutes = require('./api/routes/Friend-feed');
 const searchUsersRoutes = require('./api/routes/SearchUsers');
 const myprofileFeedRoutes = require('./api/routes/Myprofile-feed');
 
-const PW = process.env.MONGO_ATLAS_PW;
+require('dotenv').config();
 const DB = process.env.MONGO_ATLAS_DB; 
+const PW = process.env.MONGO_ATLAS_PW;
 mongoose.connect('mongodb+srv://pranav:' + PW + '@cluster0.hr6hw.mongodb.net/'+DB+'?retryWrites=true&w=majority', {
     useUnifiedTopology: true,
     useNewUrlParser: true

@@ -1,11 +1,12 @@
-<h4>stack</h4>
+<h5>stack</h5>
 Node JS (Express) REST <br/>
 Mongo DB (Mongoose ODM) <br/>
 AWS <br/>
 
-<h4>api</h4>
+<h5>api</h5>
 POST    api/user/register  <br/>
 POST    api/user/login  <br/>
+POST    api/user/logout  <br/>
 GET     api/home-feed/page/:pagenumber <br/>
 GET     api/myprofile/page/:pagenumber <br/>
 GET     api/friend/:friendname/page/:pagenumber <br/>
@@ -19,13 +20,9 @@ GET     api/comment/:photoid  <br/>
 DELETE  api/comment/:photoid/:commentid  <br/>
 
 
-<h4> PROD - AWS-EC2 ENV variables</h4>
-(For server port - update with same port in NGINX reverse proxy config file) <br/>
-    set port 3000 <br/>
-(For AWS S3 file uploads) <br/>
-    set AWS_BUCKET_NAME=**** <br/>
-    set AWS_ACCESS_ID=**** <br/>
-    set AWS_SECRET=**** <br/>
-(For MongoDB conn) <br/>
-    set MONGO_ATLAS_PW=**** <br/>
-    set MONGO_ATLAS_DB=snapshare_db
+<h5>AWS-EC2</h5>
+Update .env file and run
+$ node server.js
+
+Note : .env PORT=3000  (update NGINX reverse proxy config file wrt PORT num) <br/>
+
