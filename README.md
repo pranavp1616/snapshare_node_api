@@ -1,7 +1,7 @@
 <h5>stack</h5>
-Node JS (Express) REST <br/>
+Node JS (Express) REST API<br/>
 Mongo DB (Mongoose ODM) <br/>
-AWS <br/>
+Deployed on AWS<br/>
 
 <h5>api</h5>
 POST    api/user/register  <br/>
@@ -18,11 +18,4 @@ GET     api/like/:photoid  <br/>
 POST    api/comment/:photoid  <br/>
 GET     api/comment/:photoid  <br/>
 DELETE  api/comment/:photoid/:commentid  <br/>
-
-
-<h5>AWS-EC2</h5>
-Update .env file and run
-$ node server.js
-
-Note : .env PORT=3000  (update NGINX reverse proxy config file wrt PORT num) <br/>
 
